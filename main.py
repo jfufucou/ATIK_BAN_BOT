@@ -509,8 +509,11 @@ def health_check():
     return {"status": "ATIK BAN BOT is running smoothly!"}
 
 def run_web():
-    port = int(os.environ.get("PORT", 8080))
-    uvicorn.run(app, host="0.0.0.0", port=port)
+    try:
+        port = int(os.environ.get("PORT", 8080))
+        uvicorn.run(app, host="0.0.0.0", port=port, log_level="warning")
+    except Exception as e:
+        print(f"Web server error: {e}")
 
 def main():
     DATA_DIR.mkdir(exist_ok=True)
@@ -520,7 +523,10 @@ def main():
     t = threading.Thread(target=run_web, daemon=True)
     t.start()
     
-    application = Application.builder().token(TELEGRAM_TOKEN).build()
+    # Give web server a moment to bind port
+    time.sleep(1)
+    
+    application = Application.builder().token(TELEGRAM_TOKEN).concurrent_updates(True).build()
     
     application.add_handler(CommandHandler("start", start_command))
     application.add_handler(CommandHandler("pair", pair_command))
