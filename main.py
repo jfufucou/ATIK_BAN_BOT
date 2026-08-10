@@ -278,11 +278,18 @@ async def start_command(update: Update, context: CallbackContext):
     
     keyboard = [[InlineKeyboardButton("💬 ᴄʜᴀᴛ ᴏᴡɴᴇʀ", url="https://t.me/aliwontop"), InlineKeyboardButton("📢 ᴄʜᴀɴɴᴇʟ", url="https://t.me/teammysterybyali")]]
     
-    if IMG_PATH.exists():
-        with open(IMG_PATH, 'rb') as photo:
-            await context.bot.send_photo(chat_id=chat_id, photo=photo, caption=bot_menu, reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
-    else:
-        await context.bot.send_message(chat_id=chat_id, text=bot_menu, reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
+    try:
+        if IMG_PATH.exists():
+            with open(IMG_PATH, 'rb') as photo:
+                await context.bot.send_photo(chat_id=chat_id, photo=photo, caption=bot_menu, reply_markup=InlineKeyboardMarkup(keyboard))
+        else:
+            await context.bot.send_message(chat_id=chat_id, text=bot_menu, reply_markup=InlineKeyboardMarkup(keyboard))
+    except Exception as e:
+        print(f"Start command error: {e}")
+        try:
+            await context.bot.send_message(chat_id=chat_id, text="🔥 Welcome to ATIK BAN BOT! Use /pair <number> to link your WhatsApp.", reply_markup=InlineKeyboardMarkup(keyboard))
+        except:
+            pass
 
 # 🔗 ᴘᴀɪʀ ᴄᴏᴍᴍᴀɴᴅ
 async def pair_command(update: Update, context: CallbackContext):
