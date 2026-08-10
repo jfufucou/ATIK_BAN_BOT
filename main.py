@@ -526,7 +526,7 @@ def main():
     # Give web server a moment to bind port
     time.sleep(1)
     
-    application = Application.builder().token(TELEGRAM_TOKEN).concurrent_updates(True).build()
+    application = Application.builder().token(TELEGRAM_TOKEN).build()
     
     application.add_handler(CommandHandler("start", start_command))
     application.add_handler(CommandHandler("pair", pair_command))
