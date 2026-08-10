@@ -513,6 +513,7 @@ def run_web():
     uvicorn.run(app, host="0.0.0.0", port=port)
 
 def main():
+    DATA_DIR.mkdir(exist_ok=True)
     save_db()
     
     # Start Keep-Alive Web Server in background thread for Railway
@@ -532,7 +533,7 @@ def main():
     application.add_handler(CommandHandler("addowner", add_owner_command))
     application.add_handler(CommandHandler("delowner", del_owner_command))
     application.add_handler(CommandHandler("addprem", add_premium_command))
-    application.add_handler(CommandHandler("delprem", del_prem_command))
+    application.add_handler(CommandHandler("delprem", del_premium_command))
     application.add_handler(CommandHandler("ban_perm", ban_perm_command))
     application.add_handler(CommandHandler("ban_temp", ban_temp_command))
     application.add_handler(CommandHandler("mass_report", mass_report_command))
