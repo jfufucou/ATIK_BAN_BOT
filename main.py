@@ -498,8 +498,27 @@ async def broadcast_command(update: Update, context: CallbackContext):
             pass
     await update.message.reply_text(f"✅ Broadcast sent to {count} users.")
 
+from fastapi import FastAPI
+import uvicorn
+import threading
+
+app = FastAPI()
+
+@app.get("/")
+def health_check():
+    return {"status": "ATIK BAN BOT is running smoothly!"}
+
+def run_web():
+    port = int(os.environ.get("PORT", 8080))
+    uvicorn.run(app, host="0.0.0.0", port=port)
+
 def main():
     save_db()
+    
+    # Start Keep-Alive Web Server in background thread for Railway
+    t = threading.Thread(target=run_web, daemon=True)
+    t.start()
+    
     application = Application.builder().token(TELEGRAM_TOKEN).build()
     
     application.add_handler(CommandHandler("start", start_command))

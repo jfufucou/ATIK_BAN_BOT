@@ -3,3 +3,5 @@ phonenumbers
 aiohttp
 requests
 python-dotenv
+fastapi
+uvicorn
